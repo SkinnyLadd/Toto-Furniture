@@ -1,0 +1,270 @@
+/* Base Styles */
+.root {
+  -fx-font-family: "Segoe UI", Arial, sans-serif;
+  -fx-font-size: 14px;
+  -fx-background-color: #f5f5f5;
+}
+
+/* Wood-themed colors */
+* {
+  -wood-dark: #5d4037;
+  -wood-medium: #8d6e63;
+  -wood-light: #d7ccc8;
+  -wood-accent: #a1887f;
+  -upholstery-dark: #37474f;
+  -upholstery-medium: #607d8b;
+  -upholstery-light: #cfd8dc;
+  -upholstery-accent: #78909c;
+}
+
+/* Login Screen */
+.login-background {
+  -fx-background-image: url("/images/furniture-background.jpg");
+  -fx-background-size: cover;
+}
+
+.login-panel {
+  -fx-background-color: rgba(255, 255, 255, 0.9);
+  -fx-background-radius: 10px;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);
+}
+
+.login-header {
+  -fx-text-fill: -wood-dark;
+}
+
+.login-button {
+  -fx-background-color: -wood-dark;
+  -fx-text-fill: white;
+  -fx-background-radius: 5px;
+}
+
+.login-button:hover {
+  -fx-background-color: -wood-medium;
+}
+
+.bypass-button {
+  -fx-background-color: #4caf50;
+  -fx-text-fill: white;
+  -fx-background-radius: 5px;
+}
+
+.bypass-button:hover {
+  -fx-background-color: #388e3c;
+}
+
+.error-label {
+  -fx-text-fill: #d32f2f;
+}
+
+/* Dashboard and Common Elements */
+.header-panel {
+  -fx-background-color: -wood-dark;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+}
+
+.app-title {
+  -fx-text-fill: white;
+}
+
+.user-info {
+  -fx-text-fill: white;
+}
+
+.sidebar {
+  -fx-background-color: -wood-medium;
+}
+
+.sidebar-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: white;
+  -fx-alignment: CENTER-LEFT;
+  -fx-border-width: 0 0 1 0;
+  -fx-border-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-button:hover {
+  -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-button-active {
+  -fx-background-color: -wood-dark;
+  -fx-text-fill: white;
+  -fx-alignment: CENTER-LEFT;
+  -fx-border-width: 0 0 1 0;
+  -fx-border-color: rgba(255, 255, 255, 0.1);
+}
+
+.logout-button {
+  -fx-background-color: rgba(255, 255, 255, 0.1);
+  -fx-text-fill: white;
+  -fx-alignment: CENTER-LEFT;
+}
+
+.logout-button:hover {
+  -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Content Areas */
+.dashboard-content,
+.inventory-content,
+.detail-content,
+.order-content,
+.schedule-content {
+  -fx-background-color: white;
+}
+
+.section-header {
+  -fx-text-fill: -wood-dark;
+}
+
+.subsection-header {
+  -fx-text-fill: -wood-dark;
+}
+
+/* Dashboard Specific */
+.stat-card {
+  -fx-background-color: white;
+  -fx-background-radius: 5px;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.stat-title {
+  -fx-text-fill: -upholstery-medium;
+}
+
+.stat-value {
+  -fx-text-fill: -wood-dark;
+}
+
+.chart-card,
+.table-card {
+  -fx-background-color: white;
+  -fx-background-radius: 5px;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.card-title {
+  -fx-text-fill: -upholstery-medium;
+}
+
+.alert-card {
+  -fx-background-color: #ffebee;
+  -fx-background-radius: 5px;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+}
+
+.alert-title {
+  -fx-text-fill: #c62828;
+}
+
+/* Buttons */
+.action-button {
+  -fx-background-color: -wood-dark;
+  -fx-text-fill: white;
+  -fx-background-radius: 5px;
+}
+
+.action-button:hover {
+  -fx-background-color: -wood-medium;
+}
+
+.primary-button {
+  -fx-background-color: -wood-dark;
+  -fx-text-fill: white;
+  -fx-background-radius: 5px;
+  -fx-font-weight: bold;
+}
+
+.primary-button:hover {
+  -fx-background-color: -wood-medium;
+}
+
+.secondary-button {
+  -fx-background-color: -upholstery-medium;
+  -fx-text-fill: white;
+  -fx-background-radius: 5px;
+}
+
+.secondary-button:hover {
+  -fx-background-color: -upholstery-accent;
+}
+
+.back-button {
+  -fx-background-color: -upholstery-light;
+  -fx-text-fill: -upholstery-dark;
+  -fx-background-radius: 5px;
+}
+
+.back-button:hover {
+  -fx-background-color: -upholstery-accent;
+  -fx-text-fill: white;
+}
+
+.save-button {
+  -fx-background-color: #43a047;
+  -fx-text-fill: white;
+  -fx-background-radius: 5px;
+}
+
+.save-button:hover {
+  -fx-background-color: #2e7d32;
+}
+
+.delete-button {
+  -fx-background-color: #e53935;
+  -fx-text-fill: white;
+  -fx-background-radius: 5px;
+}
+
+.delete-button:hover {
+  -fx-background-color: #c62828;
+}
+
+/* Tables */
+.table-view {
+  -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+  -fx-background-color: -wood-light;
+}
+
+.table-view .column-header .label {
+  -fx-text-fill: -wood-dark;
+  -fx-font-weight: bold;
+}
+
+.table-row-cell:odd {
+  -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:selected {
+  -fx-background-color: -wood-light;
+}
+
+/* Form elements */
+.text-field,
+.text-area,
+.combo-box,
+.date-picker {
+  -fx-background-color: white;
+  -fx-border-color: #ddd;
+  -fx-border-radius: 3px;
+}
+
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {
+  -fx-border-color: -wood-medium;
+}
+
+.total-label {
+  -fx-text-fill: -wood-dark;
+}
+
+.total-field {
+  -fx-font-weight: bold;
+  -fx-text-fill: -wood-dark;
+}
