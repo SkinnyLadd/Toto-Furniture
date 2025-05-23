@@ -1,6 +1,6 @@
 # Furniture Shop Management System
 
-A comprehensive inventory and workforce management system for a local furniture shop in Pakistan. This application is built with Spring Boot for the backend and JavaFX for the frontend.
+A comprehensive inventory and workforce management system for a local furniture shop. This application is built with Spring Boot for the backend and JavaFX for the frontend.
 
 ## Features
 
@@ -20,9 +20,9 @@ A comprehensive inventory and workforce management system for a local furniture 
 
 ## Project Structure
 
-The project follows a standard Maven structure with Spring Boot and JavaFX integration:
+The project follows a standard Maven structure with Spring Boot and JavaFX integration (WIP):
 
-\`\`\`
+```
 src/
 ├── main/
 │   ├── java/
@@ -44,7 +44,7 @@ src/
 │       ├── application.properties    # Application configuration
 │       └── schema.sql                # Database schema
 └── test/                             # Test classes
-\`\`\`
+```
 
 ## Setup Instructions
 
@@ -54,71 +54,31 @@ src/
 - Maven 3.6 or higher
 - PostgreSQL 12 or higher
 
-### Database Setup
-
-1. Create a PostgreSQL database named `furniture_shop`:
-   \`\`\`sql
-   CREATE DATABASE furniture_shop;
-   \`\`\`
-
-2. Configure the database connection in `src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/furniture_shop
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   \`\`\`
-
-3. The application will automatically create the schema on first run using JPA, or you can manually run the `schema.sql` script.
 
 ### Building the Application
 
 1. Clone the repository:
-   \`\`\`bash
-   git clone https://github.com/yourusername/furniture-shop-management.git
-   cd furniture-shop-management
-   \`\`\`
+   ```bash
+   git clone https://github.com/SkinnyLadd/Toto-Furniture.git
+   cd totoApp
+   ```
 
 2. Build the application with Maven:
-   \`\`\`bash
+   ```bash
    mvn clean package
-   \`\`\`
+   ```
 
 ### Running the Application
 
 1. Run the application using Maven:
-   \`\`\`bash
+   ```bash
    mvn spring-boot:run
-   \`\`\`
+   ```
 
    Or run the JAR file directly:
-   \`\`\`bash
+   ```bash
    java -jar target/management-system-0.0.1-SNAPSHOT.jar
-   \`\`\`
+   ```
 
 2. The application will start and display the login screen.
 
-## Default Credentials
-
-The application comes with a default admin user:
-
-- Username: `admin`
-- Password: `admin123`
-
-You should change this password after the first login.
-
-## Development
-
-### Adding Sample Data
-
-You can add sample data by running the `data.sql` script or by using the application's UI.
-
-### Running Tests
-
-Run the tests using Maven:
-\`\`\`bash
-mvn test
-\`\`\`
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
