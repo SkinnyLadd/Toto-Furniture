@@ -73,20 +73,6 @@
                   <Insets left="20.0" />
                </padding>
             </Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Settings">
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Button>
-            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="logout-button" text="Logout">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Button>
-               </children>
-            </VBox>
          </children>
       </VBox>
    </left>
@@ -123,16 +109,16 @@
                      </children>
                   </HBox>
                   <TableView fx:id="scheduleTable" prefHeight="500.0" VBox.vgrow="ALWAYS">
-                    <columns>
-                      <TableColumn prefWidth="100.0" text="Assignment ID" />
-                      <TableColumn prefWidth="150.0" text="Staff Member" />
+                     <columns>
+                        <TableColumn prefWidth="100.0" text="Assignment ID" />
+                        <TableColumn prefWidth="150.0" text="Staff Member" />
                         <TableColumn prefWidth="100.0" text="Shift Name" />
                         <TableColumn prefWidth="150.0" text="Start Time" />
                         <TableColumn prefWidth="150.0" text="End Time" />
                         <TableColumn prefWidth="100.0" text="Status" />
                         <TableColumn prefWidth="100.0" text="Check In" />
                         <TableColumn prefWidth="100.0" text="Check Out" />
-                    </columns>
+                     </columns>
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" spacing="10.0">
                      <children>

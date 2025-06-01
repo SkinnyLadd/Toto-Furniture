@@ -2,8 +2,12 @@ package com.furnitureshop.ui.controller;
 
 import com.furnitureshop.model.entity.Assignment;
 import com.furnitureshop.model.entity.StaffMember;
+import com.furnitureshop.model.entity.Shift;
+import com.furnitureshop.model.entity.PayrollRecord;
 import com.furnitureshop.service.AssignmentService;
 import com.furnitureshop.service.StaffService;
+import com.furnitureshop.service.ShiftService;
+import com.furnitureshop.service.PayrollService;
 import com.furnitureshop.ui.StageManager;
 import com.furnitureshop.ui.view.FXMLView;
 import javafx.event.ActionEvent;
@@ -13,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -21,6 +26,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class StaffScheduleController implements Initializable {
@@ -75,6 +82,14 @@ public class StaffScheduleController implements Initializable {
     private final AssignmentService assignmentService;
 
     @Autowired
+    private ShiftService shiftService;
+
+    @Autowired
+    private PayrollService payrollService;
+
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Autowired
     public StaffScheduleController(StageManager stageManager,
                                    StaffService staffService,
                                    AssignmentService assignmentService) {
@@ -125,7 +140,7 @@ public class StaffScheduleController implements Initializable {
         addShiftButton.setOnAction(this::handleAddShiftButtonAction);
         assignStaffButton.setOnAction(this::handleAssignStaffButtonAction);
         generatePayrollButton.setOnAction(this::handleGeneratePayrollButtonAction);
-        printScheduleButton.setOnAction(this::handlePrintScheduleButtonAction);
+        printScheduleButton.setOnAction(this::handlePrintScheduleAction);
         exportScheduleButton.setOnAction(this::handleExportScheduleButtonAction);
     }
 
@@ -179,11 +194,13 @@ public class StaffScheduleController implements Initializable {
     }
 
     @FXML
-    private void handleLogoutButtonAction(ActionEvent event) {
-        // Clear security context
-        SecurityContextHolder.clearContext();
-        // Return to login screen
-        stageManager.switchScene(FXMLView.LOGIN);
+    private void handleProcurementButtonAction(ActionEvent event) {
+        stageManager.switchScene(FXMLView.PROCUREMENT);
+    }
+
+    @FXML
+    private void handleReportsButtonAction(ActionEvent event) {
+        stageManager.switchScene(FXMLView.REPORTS);
     }
 
     @FXML
@@ -193,24 +210,101 @@ public class StaffScheduleController implements Initializable {
 
     @FXML
     private void handleAddShiftButtonAction(ActionEvent event) {
-        // TODO: Implement add shift functionality
-        System.out.println("Add shift button clicked");
+        try {
+            // Create a new shift
+            Shift newShift = new Shift();
+            newShift.setShiftName("Morning Shift");
+            newShift.setStartTime(LocalDateTime.now().withHour(9).withMinute(0));
+            newShift.setEndTime(LocalDateTime.now().withHour(17).withMinute(0));
+            newShift.setDescription("Regular morning shift");
+
+            shiftService.createShift(newShift);
+
+            showAlert("Success", "New shift created successfully!\nShift: " + newShift.getShiftName());
+            loadScheduleData(); // Refresh the table
+        } catch (Exception e) {
+            showAlert("Error", "Failed to create shift: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleAssignStaffButtonAction(ActionEvent event) {
-        // TODO: Implement assign staff functionality
-        System.out.println("Assign staff button clicked");
+        StaffMember selectedStaff = staffFilter.getValue();
+        if (selectedStaff != null) {
+            try {
+                // Get available shifts
+                List<Shift> availableShifts = shiftService.findAvailableShifts();
+                if (!availableShifts.isEmpty()) {
+                    Shift shift = availableShifts.get(0); // Use first available shift
+
+                    // Create assignment
+                    Assignment assignment = new Assignment();
+                    assignment.setStaffMember(selectedStaff);
+                    assignment.setShift(shift);
+                    assignment.setAssignedDate(LocalDateTime.now());
+                    assignment.setStatus("Assigned");
+
+                    assignmentService.createAssignment(assignment);
+
+                    showAlert("Success",
+                            "Staff assigned successfully!\n" +
+                                    "Staff: " + selectedStaff.getFullName() + "\n" +
+                                    "Shift: " + shift.getShiftName());
+
+                    loadScheduleData(); // Refresh the table
+                } else {
+                    showAlert("No Shifts Available", "No shifts available for assignment. Please create a shift first.");
+                }
+            } catch (Exception e) {
+                showAlert("Error", "Failed to assign staff: " + e.getMessage());
+            }
+        } else {
+            showAlert("No Selection", "Please select a staff member to assign.");
+        }
     }
 
     @FXML
     private void handleGeneratePayrollButtonAction(ActionEvent event) {
-        // TODO: Implement generate payroll functionality
-        System.out.println("Generate payroll button clicked");
+        try {
+            LocalDateTime startDate = startDatePicker.getValue().atStartOfDay();
+            LocalDateTime endDate = endDatePicker.getValue().atTime(23, 59, 59);
+
+            List<StaffMember> activeStaff = staffService.findActiveStaffMembers();
+            int payrollRecordsGenerated = 0;
+
+            for (StaffMember staff : activeStaff) {
+                // Calculate hours worked in the period
+                List<Assignment> assignments = assignmentService.findAssignmentsByStaffMemberAndDateRange(
+                        staff, startDate, endDate);
+
+                if (!assignments.isEmpty()) {
+                    PayrollRecord payroll = new PayrollRecord();
+                    payroll.setStaffMember(staff);
+                    payroll.setPeriodStart(startDate);
+                    payroll.setPeriodEnd(endDate);
+                    payroll.setHoursWorked(assignments.size() * 8); // Assuming 8 hours per assignment
+                    payroll.setHourlyRate(staff.getHourlyRate());
+                    payroll.setGrossPay(payroll.getHourlyRate().multiply(new BigDecimal(payroll.getHoursWorked())));
+                    payroll.setNetPay(payroll.getGrossPay().multiply(new BigDecimal("0.83"))); // 17% tax deduction
+                    payroll.setGeneratedDate(LocalDateTime.now());
+
+                    payrollService.generatePayroll(payroll);
+                    payrollRecordsGenerated++;
+                }
+            }
+
+            showAlert("Success",
+                    "Payroll generated successfully!\n" +
+                            "Records generated: " + payrollRecordsGenerated + "\n" +
+                            "Period: " + startDate.format(dateFormatter) + " to " + endDate.format(dateFormatter));
+
+        } catch (Exception e) {
+            showAlert("Error", "Failed to generate payroll: " + e.getMessage());
+        }
     }
 
     @FXML
-    private void handlePrintScheduleButtonAction(ActionEvent event) {
+    private void handlePrintScheduleAction(ActionEvent event) {
         // TODO: Implement print schedule functionality
         System.out.println("Print schedule button clicked");
     }
@@ -219,5 +313,13 @@ public class StaffScheduleController implements Initializable {
     private void handleExportScheduleButtonAction(ActionEvent event) {
         // TODO: Implement export schedule functionality
         System.out.println("Export schedule button clicked");
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

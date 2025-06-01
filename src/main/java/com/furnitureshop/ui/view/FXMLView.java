@@ -6,7 +6,7 @@ public enum FXMLView {
     LOGIN {
         @Override
         public String getTitle() {
-            return "Login";
+            return "Login - Furniture Shop Management";
         }
 
         @Override
@@ -17,7 +17,7 @@ public enum FXMLView {
     DASHBOARD {
         @Override
         public String getTitle() {
-            return "Dashboard";
+            return "Dashboard - Furniture Shop Management";
         }
 
         @Override
@@ -28,7 +28,7 @@ public enum FXMLView {
     INVENTORY {
         @Override
         public String getTitle() {
-            return "Inventory Management";
+            return "Inventory Management - Furniture Shop";
         }
 
         @Override
@@ -39,7 +39,7 @@ public enum FXMLView {
     INVENTORY_DETAIL {
         @Override
         public String getTitle() {
-            return "Inventory Item Details";
+            return "Inventory Item Details - Furniture Shop";
         }
 
         @Override
@@ -50,7 +50,7 @@ public enum FXMLView {
     SALES {
         @Override
         public String getTitle() {
-            return "Sales Management";
+            return "Sales Management - Furniture Shop";
         }
 
         @Override
@@ -61,7 +61,7 @@ public enum FXMLView {
     ORDER_ENTRY {
         @Override
         public String getTitle() {
-            return "New Order";
+            return "New Sales Order - Furniture Shop";
         }
 
         @Override
@@ -69,21 +69,54 @@ public enum FXMLView {
             return "/fxml/order-entry.fxml";
         }
     },
+    PROCUREMENT {
+        @Override
+        public String getTitle() {
+            return "Procurement Management - Furniture Shop";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/procurement.fxml";
+        }
+    },
     STAFF_SCHEDULE {
         @Override
         public String getTitle() {
-            return "Staff Schedule";
+            return "Staff Schedule - Furniture Shop";
         }
 
         @Override
         public String getFxmlFile() {
             return "/fxml/staff-schedule.fxml";
         }
+    },
+    REPORTS {
+        @Override
+        public String getTitle() {
+            return "Reports & Analytics - Furniture Shop";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/reports.fxml";
+        }
+    },
+    NEW_PURCHASE_ORDER {
+        @Override
+        public String getTitle() {
+            return "New Purchase Order - Furniture Shop";
+        }
+
+        @Override
+        public String getFxmlFile() {
+            return "/fxml/new-purchase-order.fxml";
+        }
     };
 
     public abstract String getTitle();
     public abstract String getFxmlFile();
-    
+
     public ResourceBundle getResourceBundle() {
         return ResourceBundle.getBundle("bundle");
     }

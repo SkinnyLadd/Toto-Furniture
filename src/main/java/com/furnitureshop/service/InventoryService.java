@@ -63,10 +63,9 @@ public class InventoryService {
         return inventoryItemRepository.save(inventoryItem);
     }
 
-    @Transactional
-    public void deleteInventoryItem(Long id) {
-        inventoryItemRepository.deleteById(id);
-    }
+//    @Transactional
+//    public void deleteInventoryItem(Long id) {
+//    }
 
     @Transactional
     public void updateInventoryItemStatus(Long id, String newStatus) {

@@ -9,10 +9,20 @@ import java.util.List;
 
 @Repository
 public interface FurnitureTypeRepository extends JpaRepository<FurnitureType, Long> {
+
     List<FurnitureType> findByCategory(String category);
-    
-    @Query("SELECT ft FROM FurnitureType ft WHERE ft.id IN " +
-           "(SELECT i.furnitureType.id FROM InventoryItem i GROUP BY i.furnitureType.id " +
-           "HAVING COUNT(i) <= ft.minStockLevel)")
+
+    List<FurnitureType> findByNameContainingIgnoreCase(String name);
+
+    @Query("SELECT ft FROM FurnitureType ft WHERE ft.stockLevel <= ft.minStockLevel")
     List<FurnitureType> findLowStockItems();
+
+    @Query("SELECT DISTINCT ft.category FROM FurnitureType ft")
+    List<String> findDistinctCategories();
+
+    @Query("SELECT ft FROM FurnitureType ft WHERE ft.stockLevel > 0")
+    List<FurnitureType> findAvailableItems();
+
+    @Query("SELECT ft FROM FurnitureType ft WHERE ft.stockLevel = 0")
+    List<FurnitureType> findOutOfStockItems();
 }

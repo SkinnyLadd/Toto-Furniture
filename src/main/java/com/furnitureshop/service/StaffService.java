@@ -4,69 +4,87 @@ import com.furnitureshop.model.entity.StaffMember;
 import com.furnitureshop.repository.StaffMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StaffService {
 
-    private final StaffMemberRepository staffMemberRepository;
-
     @Autowired
-    public StaffService(StaffMemberRepository staffMemberRepository) {
-        this.staffMemberRepository = staffMemberRepository;
-    }
+    private StaffMemberRepository staffMemberRepository;
 
-    @Transactional(readOnly = true)
     public List<StaffMember> findAllStaffMembers() {
         return staffMemberRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public List<StaffMember> findActiveStaffMembers() {
-        return staffMemberRepository.findByActive(true);
+        return staffMemberRepository.findByIsActiveTrue();
     }
 
-    @Transactional(readOnly = true)
-    public Optional<StaffMember> findStaffMemberById(Long id) {
-        return staffMemberRepository.findById(id);
-    }
-
-    @Transactional(readOnly = true)
     public List<StaffMember> findStaffMembersByDepartment(String department) {
         return staffMemberRepository.findByDepartment(department);
     }
 
-    @Transactional(readOnly = true)
     public List<StaffMember> findStaffMembersByPosition(String position) {
         return staffMemberRepository.findByPosition(position);
     }
 
-    @Transactional
     public StaffMember createStaffMember(StaffMember staffMember) {
+        staffMember.setCreatedDate(LocalDateTime.now());
+        staffMember.setUpdatedDate(LocalDateTime.now());
+        staffMember.setIsActive(true);
+
+        // Set default hourly rate if not provided
+        if (staffMember.getHourlyRate() == null) {
+            staffMember.setHourlyRate(new BigDecimal("500.00")); // Default PKR 500 per hour
+        }
+
         return staffMemberRepository.save(staffMember);
     }
 
-    @Transactional
     public StaffMember updateStaffMember(StaffMember staffMember) {
+        staffMember.setUpdatedDate(LocalDateTime.now());
         return staffMemberRepository.save(staffMember);
     }
 
-    @Transactional
+    public Optional<StaffMember> findStaffMemberById(Long id) {
+        return staffMemberRepository.findById(id);
+    }
+
     public void deleteStaffMember(Long id) {
         staffMemberRepository.deleteById(id);
     }
 
-    @Transactional
-    public StaffMember deactivateStaffMember(Long id) {
-        Optional<StaffMember> staffOpt = staffMemberRepository.findById(id);
-        if (staffOpt.isPresent()) {
-            StaffMember staff = staffOpt.get();
-            staff.setActive(false);
-            return staffMemberRepository.save(staff);
+    public void deactivateStaffMember(Long id) {
+        Optional<StaffMember> staffMember = staffMemberRepository.findById(id);
+        if (staffMember.isPresent()) {
+            StaffMember sm = staffMember.get();
+            sm.setIsActive(false);
+            sm.setUpdatedDate(LocalDateTime.now());
+            staffMemberRepository.save(sm);
         }
-        return null;
+    }
+
+    public List<StaffMember> searchStaffMembers(String searchTerm) {
+        return staffMemberRepository.findByFullNameContainingIgnoreCaseOrEmailContainingIgnoreCase(searchTerm, searchTerm);
+    }
+
+    public List<String> findDistinctDepartments() {
+        return staffMemberRepository.findDistinctDepartments();
+    }
+
+    public List<String> findDistinctPositions() {
+        return staffMemberRepository.findDistinctPositions();
+    }
+
+    public Long countActiveStaffMembers() {
+        return staffMemberRepository.countByIsActiveTrue();
+    }
+
+    public List<StaffMember> findStaffMembersByHourlyRateRange(BigDecimal minRate, BigDecimal maxRate) {
+        return staffMemberRepository.findByHourlyRateBetween(minRate, maxRate);
     }
 }

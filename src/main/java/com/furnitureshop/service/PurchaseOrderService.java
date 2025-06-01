@@ -157,4 +157,9 @@ public class PurchaseOrderService {
         
         return prefix + "-" + timestamp + "-" + random;
     }
+
+    @Transactional
+    public void savePurchaseOrder(PurchaseOrder order) {
+        purchaseOrderRepository.save(order);
+    }
 }

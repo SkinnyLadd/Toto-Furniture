@@ -19,6 +19,7 @@ public class JavaFXApplication {
     }
 
     public void start(Stage primaryStage) {
+        stageManager.setPrimaryStage(primaryStage);
         stageManager.switchScene(FXMLView.LOGIN);
     }
 }

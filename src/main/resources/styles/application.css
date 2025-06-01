@@ -2,24 +2,26 @@
 .root {
   -fx-font-family: "Segoe UI", Arial, sans-serif;
   -fx-font-size: 14px;
-  -fx-background-color: #f5f5f5;
+  -fx-background-color: #f8f5f2; /* Warmer background for furniture aesthetic */
 }
 
-/* Wood-themed colors */
+/* Wood-themed colors - Enhanced for furniture aesthetic */
 * {
-  -wood-dark: #5d4037;
-  -wood-medium: #8d6e63;
-  -wood-light: #d7ccc8;
-  -wood-accent: #a1887f;
-  -upholstery-dark: #37474f;
-  -upholstery-medium: #607d8b;
-  -upholstery-light: #cfd8dc;
-  -upholstery-accent: #78909c;
+  -wood-dark: #4a3728; /* Richer, deeper wood tone */
+  -wood-medium: #8b6c5c; /* Warm medium wood */
+  -wood-light: #e6dbd0; /* Softer light wood */
+  -wood-accent: #b08d76; /* Warmer accent */
+  -upholstery-dark: #2c3e50; /* Deeper upholstery */
+  -upholstery-medium: #546e7a; /* Richer medium tone */
+  -upholstery-light: #e0e6ea; /* Softer light tone */
+  -upholstery-accent: #7f9eb2; /* Warmer accent */
+  -leather-accent: #8b5a2b; /* Leather color accent */
+  -fabric-accent: #7e8c8d; /* Fabric color accent */
 }
 
 /* Login Screen */
 .login-background {
-  -fx-background-image: url("/images/furniture-background.jpg");
+  -fx-background-image: url("/images/totoApp_BG_logo.jpg");
   -fx-background-size: cover;
 }
 
@@ -267,4 +269,57 @@
 .total-field {
   -fx-font-weight: bold;
   -fx-text-fill: -wood-dark;
+}
+
+/* Procurement and Reports specific styles */
+.procurement-background,
+.procurement-content,
+.reports-background,
+.reports-content {
+  -fx-background-color: white;
+}
+
+/* Pakistani Rupee currency styling */
+.currency-field {
+  -fx-text-fill: #2e7d32;
+  -fx-font-weight: bold;
+}
+
+/* Enhanced table styling for better readability */
+.table-view .table-cell {
+  -fx-padding: 8px;
+}
+
+.table-view .table-row-cell:selected .table-cell {
+  -fx-text-fill: white;
+}
+
+/* Status-based styling */
+.status-pending {
+  -fx-text-fill: #ff9800;
+  -fx-font-weight: bold;
+}
+
+.status-confirmed {
+  -fx-text-fill: #2196f3;
+  -fx-font-weight: bold;
+}
+
+.status-delivered {
+  -fx-text-fill: #4caf50;
+  -fx-font-weight: bold;
+}
+
+.status-cancelled {
+  -fx-text-fill: #f44336;
+  -fx-font-weight: bold;
+}
+
+/* Improved dropdown styling */
+.combo-box .list-cell {
+  -fx-padding: 8px 12px;
+}
+
+.combo-box .list-cell:hover {
+  -fx-background-color: -wood-light;
 }

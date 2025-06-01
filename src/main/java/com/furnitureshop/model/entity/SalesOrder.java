@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -30,6 +32,9 @@ public class SalesOrder {
 
     @Column(nullable = false)
     private LocalDateTime orderDate;
+
+    @Column
+    private LocalDateTime updatedDate;
 
     @Column
     private LocalDateTime deliveryDate;
@@ -61,4 +66,13 @@ public class SalesOrder {
 
     @Column
     private String notes;
+
+    public List<OrderLineItem> getOrderLineItems() {
+        return lineItems;
+    }
+
+    public void setCreatedDate(LocalDateTime now) {
+        // This method is intentionally left empty as the created date is not directly set here.
+        // It should be set by the service layer when creating a new SalesOrder.
+    }
 }

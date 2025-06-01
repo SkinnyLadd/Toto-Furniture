@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class FurnitureTypeService {
 
     private final FurnitureTypeRepository furnitureTypeRepository;
@@ -19,38 +20,80 @@ public class FurnitureTypeService {
         this.furnitureTypeRepository = furnitureTypeRepository;
     }
 
-    @Transactional(readOnly = true)
-    public List<FurnitureType> findAllFurnitureTypes() {
-        return furnitureTypeRepository.findAll();
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<FurnitureType> findFurnitureTypeById(Long id) {
-        return furnitureTypeRepository.findById(id);
-    }
-
-    @Transactional(readOnly = true)
-    public List<FurnitureType> findFurnitureTypesByCategory(String category) {
-        return furnitureTypeRepository.findByCategory(category);
-    }
-
-    @Transactional(readOnly = true)
-    public List<FurnitureType> findLowStockItems() {
-        return furnitureTypeRepository.findLowStockItems();
-    }
-
-    @Transactional
     public FurnitureType createFurnitureType(FurnitureType furnitureType) {
         return furnitureTypeRepository.save(furnitureType);
     }
 
-    @Transactional
     public FurnitureType updateFurnitureType(FurnitureType furnitureType) {
         return furnitureTypeRepository.save(furnitureType);
     }
 
-    @Transactional
+    public Optional<FurnitureType> findFurnitureTypeById(Long id) {
+        return furnitureTypeRepository.findById(id);
+    }
+
+    public List<FurnitureType> findAllFurnitureTypes() {
+        return furnitureTypeRepository.findAll();
+    }
+
+    public List<FurnitureType> findFurnitureTypesByCategory(String category) {
+        return furnitureTypeRepository.findByCategory(category);
+    }
+
+    public List<FurnitureType> findFurnitureTypesByName(String name) {
+        return furnitureTypeRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public List<FurnitureType> findLowStockItems() {
+        return furnitureTypeRepository.findLowStockItems();
+    }
+
     public void deleteFurnitureType(Long id) {
         furnitureTypeRepository.deleteById(id);
+    }
+
+    public List<String> findAllCategories() {
+        return furnitureTypeRepository.findDistinctCategories();
+    }
+
+    public void updateStockLevel(Long furnitureTypeId, Integer newStockLevel) {
+        Optional<FurnitureType> furnitureTypeOpt = furnitureTypeRepository.findById(furnitureTypeId);
+        if (furnitureTypeOpt.isPresent()) {
+            FurnitureType furnitureType = furnitureTypeOpt.get();
+            furnitureType.setStockLevel(newStockLevel);
+            furnitureTypeRepository.save(furnitureType);
+        }
+    }
+
+    public void decreaseStock(Long furnitureTypeId, Integer quantity) {
+        Optional<FurnitureType> furnitureTypeOpt = furnitureTypeRepository.findById(furnitureTypeId);
+        if (furnitureTypeOpt.isPresent()) {
+            FurnitureType furnitureType = furnitureTypeOpt.get();
+            int currentStock = furnitureType.getStockLevel();
+            if (currentStock >= quantity) {
+                furnitureType.setStockLevel(currentStock - quantity);
+                furnitureTypeRepository.save(furnitureType);
+            } else {
+                throw new RuntimeException("Insufficient stock. Available: " + currentStock + ", Required: " + quantity);
+            }
+        }
+    }
+
+    public void increaseStock(Long furnitureTypeId, Integer quantity) {
+        Optional<FurnitureType> furnitureTypeOpt = furnitureTypeRepository.findById(furnitureTypeId);
+        if (furnitureTypeOpt.isPresent()) {
+            FurnitureType furnitureType = furnitureTypeOpt.get();
+            furnitureType.setStockLevel(furnitureType.getStockLevel() + quantity);
+            furnitureTypeRepository.save(furnitureType);
+        }
+    }
+
+    public boolean isLowStock(Long furnitureTypeId) {
+        Optional<FurnitureType> furnitureTypeOpt = furnitureTypeRepository.findById(furnitureTypeId);
+        if (furnitureTypeOpt.isPresent()) {
+            FurnitureType furnitureType = furnitureTypeOpt.get();
+            return furnitureType.getStockLevel() <= furnitureType.getMinStockLevel();
+        }
+        return false;
     }
 }

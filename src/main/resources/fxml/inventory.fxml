@@ -58,35 +58,21 @@
                   <Insets left="20.0" />
                </padding>
             </Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Procurement">
+            <Button fx:id="procurementButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleProcurementButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Procurement">
                <padding>
                   <Insets left="20.0" />
                </padding>
             </Button>
-            <Button fx:id="staffButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Staff">
+            <Button fx:id="staffButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleStaffButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Staff">
                <padding>
                   <Insets left="20.0" />
                </padding>
             </Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Reports">
+            <Button fx:id="reportsButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleReportsButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Reports">
                <padding>
                   <Insets left="20.0" />
                </padding>
             </Button>
-            <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Settings">
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </Button>
-            <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Button alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" styleClass="logout-button" text="Logout">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Button>
-               </children>
-            </VBox>
          </children>
       </VBox>
    </left>
@@ -105,6 +91,7 @@
                         <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
                               <Button fx:id="addItemButton" mnemonicParsing="false" styleClass="action-button" text="Add New Item" />
+<!--                              <Button fx:id="deleteSelectedButton" mnemonicParsing="false" styleClass="delete-button" text="Delete Selected" onAction="#handleDeleteSelectedButtonAction" />-->
                               <Button fx:id="refurbishButton" mnemonicParsing="false" styleClass="action-button" text="Schedule Refurbishment" />
                               <Button fx:id="exportButton" mnemonicParsing="false" styleClass="action-button" text="Export" />
                            </children>
@@ -121,16 +108,16 @@
                      </children>
                   </HBox>
                   <TableView fx:id="inventoryTable" prefHeight="500.0" VBox.vgrow="ALWAYS">
-                    <columns>
-                      <TableColumn prefWidth="100.0" text="Item ID" />
-                      <TableColumn prefWidth="150.0" text="Serial Number" />
-                      <TableColumn prefWidth="150.0" text="Furniture Type" />
-                      <TableColumn prefWidth="100.0" text="Category" />
-                      <TableColumn prefWidth="100.0" text="Condition" />
-                      <TableColumn prefWidth="100.0" text="Location" />
-                      <TableColumn prefWidth="100.0" text="Status" />
-                      <TableColumn prefWidth="120.0" text="Acquisition Date" />
-                    </columns>
+                     <columns>
+                        <TableColumn fx:id="itemIdColumn" text="Item ID" />
+                        <TableColumn fx:id="serialNumberColumn" text="Serial Number" />
+                        <TableColumn fx:id="furnitureTypeColumn" text="Furniture Type" />
+                        <TableColumn fx:id="categoryColumn" text="Category" />
+                        <TableColumn fx:id="conditionColumn" text="Condition" />
+                        <TableColumn fx:id="locationColumn" text="Location" />
+                        <TableColumn fx:id="statusColumn" text="Status" />
+                        <TableColumn fx:id="acquisitionDateColumn" text="Acquisition Date" />
+                     </columns>
                   </TableView>
                   <HBox alignment="CENTER_RIGHT" spacing="10.0">
                      <children>

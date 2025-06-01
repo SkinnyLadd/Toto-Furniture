@@ -30,6 +30,9 @@ public class FurnitureType {
     @Column(nullable = false)
     private BigDecimal basePrice;
 
+    @Column(nullable = false)
+    private BigDecimal price; // Current selling price
+
     @Column
     private String dimensions;
 
@@ -47,4 +50,37 @@ public class FurnitureType {
 
     @Column(nullable = false)
     private Integer reorderQuantity;
+
+    @Column(nullable = false)
+    private Integer stockLevel; // Current stock level
+
+    @Override
+    public String toString(){
+        return name + " (" + category + ") - " + basePrice.toString() + " PKR";
+    }
+
+    // Additional getter methods for compatibility
+    public Integer getStockLevel() {
+        return stockLevel;
+    }
+
+    public void setStockLevel(Integer stockLevel) {
+        this.stockLevel = stockLevel;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getMinStockLevel() {
+        return minStockLevel;
+    }
+
+    public void setMinStockLevel(Integer minStockLevel) {
+        this.minStockLevel = minStockLevel;
+    }
 }

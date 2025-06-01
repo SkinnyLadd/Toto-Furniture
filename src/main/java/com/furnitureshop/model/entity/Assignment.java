@@ -40,4 +40,11 @@ public class Assignment {
 
     @Column
     private String notes;
+
+    @Column
+    private LocalDateTime createdDate;
+
+    @Column
+    private LocalDateTime updatedDate;
+
 }

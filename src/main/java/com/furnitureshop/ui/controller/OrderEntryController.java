@@ -18,6 +18,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ListCell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,8 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Component
 public class OrderEntryController implements Initializable {
@@ -94,6 +97,7 @@ public class OrderEntryController implements Initializable {
     private final CustomerService customerService;
     private final FurnitureTypeService furnitureTypeService;
     private final InventoryService inventoryService;
+    private final NumberFormat currencyFormat;
 
     @Autowired
     public OrderEntryController(StageManager stageManager,
@@ -106,6 +110,7 @@ public class OrderEntryController implements Initializable {
         this.customerService = customerService;
         this.furnitureTypeService = furnitureTypeService;
         this.inventoryService = inventoryService;
+        this.currencyFormat = NumberFormat.getCurrencyInstance(new Locale("en", "PK"));
     }
 
     @Override
@@ -116,10 +121,38 @@ public class OrderEntryController implements Initializable {
     }
 
     private void setupComboBoxes() {
-        // Set up customer combo
+        // Set up customer combo with user-friendly display
         try {
             List<Customer> customers = customerService.findAllCustomers();
             customerCombo.getItems().addAll(customers);
+
+            // Custom cell factory for customer display
+            customerCombo.setCellFactory(listView -> new ListCell<Customer>() {
+                @Override
+                protected void updateItem(Customer customer, boolean empty) {
+                    super.updateItem(customer, empty);
+                    if (empty || customer == null) {
+                        setText(null);
+                    } else {
+                        setText(String.format("%s - %s (%s)",
+                                customer.getFullName(),
+                                customer.getPhoneNumber(),
+                                customer.getCity()));
+                    }
+                }
+            });
+
+            customerCombo.setButtonCell(new ListCell<Customer>() {
+                @Override
+                protected void updateItem(Customer customer, boolean empty) {
+                    super.updateItem(customer, empty);
+                    if (empty || customer == null) {
+                        setText("Select Customer");
+                    } else {
+                        setText(String.format("%s - %s", customer.getFullName(), customer.getPhoneNumber()));
+                    }
+                }
+            });
         } catch (Exception e) {
             System.err.println("Error loading customers: " + e.getMessage());
             e.printStackTrace();
@@ -134,14 +167,70 @@ public class OrderEntryController implements Initializable {
         );
         statusCombo.setValue("Pending");
 
-        // Set up furniture type combo
+        // Set up furniture type combo with enhanced display
         try {
             List<FurnitureType> furnitureTypes = furnitureTypeService.findAllFurnitureTypes();
             itemTypeCombo.getItems().addAll(furnitureTypes);
+
+            // Custom cell factory for furniture type display
+            itemTypeCombo.setCellFactory(listView -> new ListCell<FurnitureType>() {
+                @Override
+                protected void updateItem(FurnitureType furnitureType, boolean empty) {
+                    super.updateItem(furnitureType, empty);
+                    if (empty || furnitureType == null) {
+                        setText(null);
+                    } else {
+                        setText(String.format("%s - %s (PKR %s)",
+                                furnitureType.getName(),
+                                furnitureType.getCategory(),
+                                currencyFormat.format(furnitureType.getBasePrice())));
+                    }
+                }
+            });
+
+            itemTypeCombo.setButtonCell(new ListCell<FurnitureType>() {
+                @Override
+                protected void updateItem(FurnitureType furnitureType, boolean empty) {
+                    super.updateItem(furnitureType, empty);
+                    if (empty || furnitureType == null) {
+                        setText("Select Furniture Type");
+                    } else {
+                        setText(String.format("%s - %s", furnitureType.getName(), furnitureType.getCategory()));
+                    }
+                }
+            });
         } catch (Exception e) {
             System.err.println("Error loading furniture types: " + e.getMessage());
             e.printStackTrace();
         }
+
+        // Set up item combo with enhanced display
+        itemCombo.setCellFactory(listView -> new ListCell<InventoryItem>() {
+            @Override
+            protected void updateItem(InventoryItem item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("Serial: %s - %s (%s)",
+                            item.getSerialNumber(),
+                            item.getCondition(),
+                            item.getLocation()));
+                }
+            }
+        });
+
+        itemCombo.setButtonCell(new ListCell<InventoryItem>() {
+            @Override
+            protected void updateItem(InventoryItem item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("Select Item");
+                } else {
+                    setText(String.format("Serial: %s - %s", item.getSerialNumber(), item.getCondition()));
+                }
+            }
+        });
     }
 
     private void setupEventHandlers() {

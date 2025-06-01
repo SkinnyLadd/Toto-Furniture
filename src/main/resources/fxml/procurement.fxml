@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -14,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="768.0" prefWidth="1024.0" styleClass="sales-background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.furnitureshop.ui.controller.SalesController">
+<BorderPane prefHeight="768.0" prefWidth="1024.0" styleClass="procurement-background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.furnitureshop.ui.controller.ProcurementController">
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="60.0" styleClass="header-panel">
             <children>
@@ -54,12 +53,12 @@
                         <Insets left="20.0" />
                     </padding>
                 </Button>
-                <Button fx:id="salesButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleSalesButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button-active" text="Sales">
+                <Button fx:id="salesButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleSalesButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Sales">
                     <padding>
                         <Insets left="20.0" />
                     </padding>
                 </Button>
-                <Button fx:id="procurementButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleProcurementButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Procurement">
+                <Button fx:id="procurementButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleProcurementButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button-active" text="Procurement">
                     <padding>
                         <Insets left="20.0" />
                     </padding>
@@ -78,21 +77,22 @@
         </VBox>
     </left>
     <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="sales-content">
+        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="procurement-content">
             <content>
                 <VBox spacing="20.0">
                     <children>
                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                             <children>
-                                <Label styleClass="section-header" text="Sales Management">
+                                <Label styleClass="section-header" text="Procurement Management">
                                     <font>
                                         <Font name="System Bold" size="16.0" />
                                     </font>
                                 </Label>
                                 <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                        <Button fx:id="newOrderButton" mnemonicParsing="false" onAction="#handleNewOrderButtonAction" styleClass="action-button" text="New Order" />
+                                        <Button fx:id="newPurchaseOrderButton" mnemonicParsing="false" onAction="#handleNewPurchaseOrderButtonAction" styleClass="action-button" text="New Purchase Order" />
                                         <Button fx:id="viewDetailsButton" mnemonicParsing="false" onAction="#handleViewDetailsButtonAction" styleClass="action-button" text="View Details" />
+                                        <Button fx:id="receiveItemsButton" mnemonicParsing="false" onAction="#handleReceiveItemsButtonAction" styleClass="action-button" text="Receive Items" />
                                         <Button fx:id="exportButton" mnemonicParsing="false" onAction="#handleExportButtonAction" styleClass="action-button" text="Export" />
                                     </children>
                                 </HBox>
@@ -100,25 +100,20 @@
                         </HBox>
                         <HBox spacing="10.0">
                             <children>
-                                <TextField fx:id="searchField" promptText="Search orders..." HBox.hgrow="ALWAYS" />
+                                <TextField fx:id="searchField" promptText="Search purchase orders..." HBox.hgrow="ALWAYS" />
                                 <ComboBox fx:id="statusFilter" prefWidth="150.0" promptText="Status" />
-                                <Label text="Date Range:" />
-                                <DatePicker fx:id="startDatePicker" promptText="Start Date" />
-                                <Label text="to" />
-                                <DatePicker fx:id="endDatePicker" promptText="End Date" />
+                                <ComboBox fx:id="supplierFilter" prefWidth="200.0" promptText="Supplier" />
                                 <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearchButtonAction" text="Search" />
                                 <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleResetButtonAction" text="Reset" />
                             </children>
                         </HBox>
-                        <TableView fx:id="salesOrderTable" prefHeight="500.0" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="purchaseOrderTable" prefHeight="500.0" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="orderNumberColumn" text="Order #" />
-                                <TableColumn fx:id="customerColumn" text="Customer" />
+                                <TableColumn fx:id="orderNumberColumn" text="Order Number" />
+                                <TableColumn fx:id="supplierColumn" text="Supplier" />
                                 <TableColumn fx:id="orderDateColumn" text="Order Date" />
-                                <TableColumn fx:id="deliveryDateColumn" text="Delivery Date" />
                                 <TableColumn fx:id="statusColumn" text="Status" />
                                 <TableColumn fx:id="totalAmountColumn" text="Total Amount (PKR)" />
-                                <TableColumn fx:id="createdByColumn" text="Created By" />
                             </columns>
                         </TableView>
                     </children>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="768.0" prefWidth="1024.0" styleClass="reports-background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.furnitureshop.ui.controller.ReportsController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="60.0" styleClass="header-panel">
+            <children>
+                <Label styleClass="app-title" text="Furniture Shop Management System">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" />
+                    </HBox.margin>
+                </Label>
+                <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="user-info" text="Welcome, Admin">
+                            <HBox.margin>
+                                <Insets right="20.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+    </top>
+    <left>
+        <VBox prefHeight="708.0" prefWidth="200.0" styleClass="sidebar">
+            <children>
+                <Button fx:id="dashboardButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Dashboard">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="inventoryButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleInventoryButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Inventory">
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="salesButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleSalesButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Sales">
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="procurementButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleProcurementButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Procurement">
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="staffButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleStaffButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button" text="Staff">
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="reportsButton" alignment="BASELINE_LEFT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#handleReportsButtonAction" prefHeight="50.0" prefWidth="200.0" styleClass="sidebar-button-active" text="Reports">
+                    <padding>
+                        <Insets left="20.0" />
+                    </padding>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="reports-content">
+            <content>
+                <VBox spacing="20.0">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                            <children>
+                                <Label styleClass="section-header" text="Reports and Analytics">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+                                <HBox alignment="CENTER_RIGHT" spacing="10.0" HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <Label text="Date Range:" />
+                                        <DatePicker fx:id="startDatePicker" promptText="Start Date" />
+                                        <Label text="to" />
+                                        <DatePicker fx:id="endDatePicker" promptText="End Date" />
+                                        <Button fx:id="generateReportButton" mnemonicParsing="false" onAction="#handleGenerateReportButtonAction" styleClass="action-button" text="Generate Report" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+                        <HBox spacing="20.0">
+                            <children>
+                                <VBox prefHeight="120.0" prefWidth="180.0" styleClass="stat-card">
+                                    <children>
+                                        <Label styleClass="stat-title" text="Total Sales (PKR)">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <Label fx:id="totalSalesLabel" styleClass="stat-value" text="₨ 0.00">
+                                            <font>
+                                                <Font name="System Bold" size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox prefHeight="120.0" prefWidth="180.0" styleClass="stat-card">
+                                    <children>
+                                        <Label styleClass="stat-title" text="Total Orders">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <Label fx:id="totalOrdersLabel" styleClass="stat-value" text="0">
+                                            <font>
+                                                <Font name="System Bold" size="24.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox prefHeight="120.0" prefWidth="180.0" styleClass="stat-card">
+                                    <children>
+                                        <Label styleClass="stat-title" text="Total Inventory">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <Label fx:id="totalInventoryLabel" styleClass="stat-value" text="0">
+                                            <font>
+                                                <Font name="System Bold" size="24.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox prefHeight="120.0" prefWidth="180.0" styleClass="stat-card">
+                                    <children>
+                                        <Label styleClass="stat-title" text="Low Stock Items">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <Label fx:id="lowStockItemsLabel" styleClass="stat-value" text="0">
+                                            <font>
+                                                <Font name="System Bold" size="24.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <HBox spacing="20.0">
+                            <children>
+                                <VBox prefHeight="300.0" prefWidth="400.0" styleClass="chart-card">
+                                    <children>
+                                        <Label styleClass="card-title" text="Sales by Status">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <PieChart fx:id="salesByStatusChart" prefHeight="250.0" prefWidth="400.0" />
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox prefHeight="300.0" prefWidth="400.0" styleClass="chart-card">
+                                    <children>
+                                        <Label styleClass="card-title" text="Monthly Sales Trend">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <BarChart fx:id="monthlySalesChart" prefHeight="250.0" prefWidth="400.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </BarChart>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <HBox spacing="20.0">
+                            <children>
+                                <VBox prefHeight="250.0" prefWidth="400.0" styleClass="table-card">
+                                    <children>
+                                        <Label styleClass="card-title" text="Top Selling Items">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <TableView fx:id="topSellingItemsTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn prefWidth="200.0" text="Item Name" />
+                                                <TableColumn prefWidth="100.0" text="Quantity Sold" />
+                                                <TableColumn prefWidth="100.0" text="Revenue (PKR)" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                                <VBox prefHeight="250.0" prefWidth="400.0" styleClass="table-card">
+                                    <children>
+                                        <Label styleClass="card-title" text="Low Stock Report">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                            </VBox.margin>
+                                        </Label>
+                                        <TableView fx:id="lowStockReportTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                            <columns>
+                                                <TableColumn prefWidth="200.0" text="Item Name" />
+                                                <TableColumn prefWidth="100.0" text="Current Stock" />
+                                                <TableColumn prefWidth="100.0" text="Min Level" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                            <children>
+                                <Button fx:id="exportSalesReportButton" mnemonicParsing="false" onAction="#handleExportSalesReportButtonAction" styleClass="secondary-button" text="Export Sales Report" />
+                                <Button fx:id="exportInventoryReportButton" mnemonicParsing="false" onAction="#handleExportInventoryReportButtonAction" styleClass="secondary-button" text="Export Inventory Report" />
+                                <Button fx:id="printReportButton" mnemonicParsing="false" onAction="#handlePrintReportButtonAction" styleClass="secondary-button" text="Print Report" />
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

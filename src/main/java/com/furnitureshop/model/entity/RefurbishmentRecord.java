@@ -29,19 +29,65 @@ public class RefurbishmentRecord {
     @Column
     private LocalDateTime completionDate;
 
-    @Column(nullable = false)
-    private String description;
-
-    @Column(nullable = false)
-    private BigDecimal cost;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "assigned_staff_id")
-    private StaffMember assignedStaff;
+    @Column
+    private LocalDateTime estimatedCompletionDate;
 
     @Column(nullable = false)
     private String status; // Scheduled, In Progress, Completed, Cancelled
 
     @Column
+    private String description;
+
+    @Column
+    private BigDecimal cost;
+
+    @Column
+    private String workPerformed;
+
+    @Column
     private String notes;
+
+    @Column
+    private String assignedTechnician;
+
+    // Additional getter and setter methods for compatibility
+    public LocalDateTime getEstimatedCompletionDate() {
+        return estimatedCompletionDate;
+    }
+
+    public void setEstimatedCompletionDate(LocalDateTime estimatedCompletionDate) {
+        this.estimatedCompletionDate = estimatedCompletionDate;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public InventoryItem getInventoryItem() {
+        return inventoryItem;
+    }
+
+    public void setInventoryItem(InventoryItem inventoryItem) {
+        this.inventoryItem = inventoryItem;
+    }
 }

@@ -3,11 +3,14 @@ package com.furnitureshop.ui.controller;
 import com.furnitureshop.model.entity.FurnitureType;
 import com.furnitureshop.model.entity.InventoryItem;
 import com.furnitureshop.model.entity.RefurbishmentRecord;
+import com.furnitureshop.model.entity.SalesOrder;
 import com.furnitureshop.service.FurnitureTypeService;
 import com.furnitureshop.service.InventoryService;
 import com.furnitureshop.service.RefurbishmentService;
+import com.furnitureshop.service.SalesOrderService;
 import com.furnitureshop.ui.StageManager;
 import com.furnitureshop.ui.view.FXMLView;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +23,7 @@ import javafx.scene.control.TextField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -61,7 +65,7 @@ public class InventoryDetailController implements Initializable {
     private TableView<RefurbishmentRecord> refurbishmentTable;
 
     @FXML
-    private TableView<?> salesHistoryTable;
+    private TableView<SalesOrder> salesHistoryTable;
 
     @FXML
     private Button backButton;
@@ -79,6 +83,7 @@ public class InventoryDetailController implements Initializable {
     private final InventoryService inventoryService;
     private final FurnitureTypeService furnitureTypeService;
     private final RefurbishmentService refurbishmentService;
+    private final SalesOrderService salesOrderService;
 
     private InventoryItem currentItem;
 
@@ -86,11 +91,13 @@ public class InventoryDetailController implements Initializable {
     public InventoryDetailController(StageManager stageManager,
                                      InventoryService inventoryService,
                                      FurnitureTypeService furnitureTypeService,
-                                     RefurbishmentService refurbishmentService) {
+                                     RefurbishmentService refurbishmentService,
+                                     SalesOrderService salesOrderService) {
         this.stageManager = stageManager;
         this.inventoryService = inventoryService;
         this.furnitureTypeService = furnitureTypeService;
         this.refurbishmentService = refurbishmentService;
+        this.salesOrderService = salesOrderService;
     }
 
     @Override
@@ -185,6 +192,8 @@ public class InventoryDetailController implements Initializable {
         notesArea.clear();
     }
 
+
+
     private void loadRefurbishmentHistory(InventoryItem item) {
         try {
             List<RefurbishmentRecord> records = refurbishmentService.findRefurbishmentRecordsByInventoryItem(item);
@@ -200,11 +209,56 @@ public class InventoryDetailController implements Initializable {
         stageManager.switchScene(FXMLView.INVENTORY);
     }
 
+    private void showAlert(String title, String message) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     @FXML
     private void handleSaveButtonAction(ActionEvent event) {
-        // TODO: Implement save functionality
-        System.out.println("Save button clicked");
-        stageManager.switchScene(FXMLView.INVENTORY);
+        try {
+            if (currentItem == null) {
+                // Create a new inventory item
+                InventoryItem newItem = new InventoryItem();
+                populateItemFromFields(newItem);
+                inventoryService.createInventoryItem(newItem);
+                showAlert("Success", "New inventory item saved successfully!");
+            } else {
+                // Update the existing inventory item
+                populateItemFromFields(currentItem);
+                inventoryService.updateInventoryItem(currentItem);
+                showAlert("Success", "Inventory item updated successfully!");
+            }
+            stageManager.switchScene(FXMLView.INVENTORY);
+        } catch (Exception e) {
+            showAlert("Error", "Failed to save inventory item: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void loadSalesHistory(InventoryItem item) {
+        try {
+            List<SalesOrder> salesHistory = salesOrderService.findSalesOrdersByInventoryItem(item);
+            salesHistoryTable.getItems().setAll(FXCollections.observableArrayList(salesHistory));
+        } catch (Exception e) {
+            System.err.println("Error loading sales history: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    private void populateItemFromFields(InventoryItem item) {
+        item.setSerialNumber(serialNumberField.getText());
+        item.setFurnitureType(furnitureTypeCombo.getValue());
+        item.setCondition(conditionCombo.getValue());
+        item.setLocation(locationField.getText());
+        item.setStatus(statusCombo.getValue());
+        item.setAcquisitionDate(acquisitionDatePicker.getValue().atStartOfDay());
+        item.setPurchasePrice(BigDecimal.valueOf(Double.parseDouble(purchasePriceField.getText())));
+        item.setNotes(notesArea.getText());
     }
 
     @FXML

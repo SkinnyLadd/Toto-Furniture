@@ -40,4 +40,21 @@ public class OrderLineItem {
 
     @Column
     private String notes;
+
+    // Additional getter methods for compatibility
+    public InventoryItem getInventoryItem() {
+        return inventoryItem;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public BigDecimal getSubtotal() {
+        return lineTotal;
+    }
+
+    public BigDecimal getLineTotal() {
+        return lineTotal;
+    }
 }
